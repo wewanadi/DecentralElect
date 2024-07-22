@@ -9,8 +9,6 @@ DecentralElect provides three approaches for deploying voting systems on the blo
 * PartitionDecentralElect balances both anonymity and computational complexity, making it suitable for handling votes involving over a thousand participants.
 
 ## Four Tech
-In this chapter, we delve into four critical technologies utilized in this voting system. First, we explore how ring signatures are employed to ensure voter anonymity. Next, we address the issue of double voting by the same individual using linkable ring signatures. To solve the problem of premature opening of votes, we implement the commit-reveal scheme. Finally, to balance the reduction of overall election costs and the protection of voter privacy, we adopt the partition ring method. This chapter provides a detailed explanation of these four key technologies.
-
 ### Ring Signature Scheme
 
 Preserving the anonymity of voting presents a challenge when employing traditional digital signature techniques, as they risk divulging the signer's identity, thus compromising the integrity of the vote.
