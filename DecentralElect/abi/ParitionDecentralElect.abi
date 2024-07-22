@@ -1,0 +1,504 @@
+[
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_chiave_x",
+				"type": "uint256"
+			}
+		],
+		"name": "check_if_registered",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "ballot_hash",
+				"type": "uint256"
+			}
+		],
+		"name": "check_if_verified",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tag_x",
+				"type": "uint256"
+			}
+		],
+		"name": "check_if_voted",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			}
+		],
+		"name": "cluser_voters",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "subject",
+				"type": "string"
+			}
+		],
+		"name": "create_election",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "elections",
+		"outputs": [
+			{
+				"internalType": "enum ParitionDecentralElect.Status",
+				"name": "status",
+				"type": "uint8"
+			},
+			{
+				"internalType": "string",
+				"name": "subject",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "voter_length",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "cluster_progress",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			}
+		],
+		"name": "get_candidates",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "vote",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ParitionDecentralElect.Candidate[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			}
+		],
+		"name": "get_cluster_progress",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_chiave_x",
+				"type": "uint256"
+			}
+		],
+		"name": "get_constituency",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "constituency",
+				"type": "uint256"
+			}
+		],
+		"name": "get_registered_pkeys",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "chiaveX",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "chiaveY",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ParitionDecentralElect.Voter[10]",
+				"name": "",
+				"type": "tuple[10]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			}
+		],
+		"name": "get_status",
+		"outputs": [
+			{
+				"internalType": "enum ParitionDecentralElect.Status",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "manager",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "registerManager",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_chiave_x",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_chiave_y",
+				"type": "uint256"
+			}
+		],
+		"name": "register_voter",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			}
+		],
+		"name": "set_candidate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			}
+		],
+		"name": "start_vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			}
+		],
+		"name": "stop_verification",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			}
+		],
+		"name": "stop_vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "voteData",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256[2]",
+				"name": "tag",
+				"type": "uint256[2]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "tees",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "seed",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "constituency_idx",
+				"type": "uint256"
+			}
+		],
+		"name": "verifyRingSignature",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "ballot",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "ballot_hash",
+				"type": "uint256"
+			}
+		],
+		"name": "verify_ballot",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "identifier",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "constituency_idx",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256[2]",
+				"name": "tag",
+				"type": "uint256[2]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "tees",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "seed",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "ballot_hash",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
