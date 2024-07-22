@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./lib/altbn128.sol";
 
-contract PDE {
+contract ParitionDecentralElect {
     
     using Curve for Curve.G1Point;
     
@@ -53,9 +53,9 @@ contract PDE {
         _;
     }
 
-    constructor(address _registerManager) {
+    constructor() {
         manager = msg.sender;
-        registerManager = _registerManager;
+        registerManager = msg.sender;
     }
     
     
@@ -231,6 +231,9 @@ contract PDE {
         return elections[identifier].vote_record[tag_x];
     }
 
+    function check_if_verified(uint256 identifier, uint256 ballot_hash) external view returns (bool) {
+        return elections[identifier].verification_record[ballot_hash];
+    }
 
     // internal function
     function bytesToBigNumber(bytes32 hash) internal pure returns (uint256) {

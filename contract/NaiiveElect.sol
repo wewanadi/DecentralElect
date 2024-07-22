@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./lib/altbn128.sol";
 
-contract DecentralElect {
+contract NaiiveElect {
     
     using Curve for Curve.G1Point;
     
@@ -28,7 +28,6 @@ contract DecentralElect {
         uint256[] voters_x;
         Voter[] voters;
 
-        bytes32 pkHashAccumulator;
         mapping(uint256 => bool) registration_record;
         mapping(uint256 => bool) vote_record;
         mapping(uint256 => bool) ballot_hash_pool;
@@ -50,9 +49,9 @@ contract DecentralElect {
         _;
     }
 
-    constructor(address _registerManager) {
+    constructor() {
         manager = msg.sender;
-        registerManager = _registerManager;
+        registerManager = msg.sender;
     }
     
     // Manager functions 
@@ -77,12 +76,6 @@ contract DecentralElect {
         
         require(election.status == Status.Registration, "An error occurred: StatusError: not registration status");
         require(!election.registration_record[_chiave_x], "An error occurred: RegistrationError: Duplicate registration");
-
-        if (election.voters_x.length == 0) {
-            election.pkHashAccumulator = keccak256(abi.encodePacked(_chiave_x));
-        } else {
-            election.pkHashAccumulator = keccak256(abi.encodePacked(election.pkHashAccumulator, _chiave_x));
-        }
 
         election.voters_x.push(_chiave_x);
         election.voters.push(Voter(_chiave_x, _chiave_y));
@@ -112,15 +105,14 @@ contract DecentralElect {
 
 
     // Voter function
-    function vote(uint256 identifier, uint256[2] calldata tag, uint256[] calldata tees, uint256 seed, uint256 ballot_hash) external {
+    function vote(uint256 identifier, uint256[2] calldata public_keys, uint256 ballot_hash, uint256[2] calldata signature) external {
         Election storage election = elections[identifier];
         require(election.status == Status.Vote, "An error occurred: StatusError: not vote status");
-        require(tees.length == election.voters_x.length, "An error occurred: RingSignatureError: The ring signature, to be valid, must be as long as the number of voters.");
-        require(!election.vote_record[tag[0]], "An error occurred: VoteError: duplicate voting");
+        require(!election.vote_record[public_keys[0]], "An error occurred: VoteError: duplicate voting");
         require(!election.ballot_hash_pool[ballot_hash], "An error occurred: VoteError: This ballot_hash has been chosen");
-        require(verifyRingSignature(ballot_hash, tag, tees, seed, identifier), "An error occurred: VoteError: invalid ring signature");
+        require(verifySignature(public_keys, ballot_hash, signature), "An error occurred: VoteError: invalid ring signature");
 
-        election.vote_record[tag[0]] = true;
+        election.vote_record[public_keys[0]] = true;
         election.ballot_hash_pool[ballot_hash] = true;
     }
 
@@ -161,6 +153,10 @@ contract DecentralElect {
         return elections[identifier].vote_record[tag_x];
     }
 
+    function check_if_verified(uint256 identifier, uint256 ballot_hash) external view returns (bool) {
+        return elections[identifier].verification_record[ballot_hash];
+    }
+
     // internal function
     function bytesToBigNumber(bytes32 hash) internal pure returns (uint256) {
         uint256 result = 0;
@@ -190,37 +186,60 @@ contract DecentralElect {
         return result;
     }
 
-    function verifyRingSignature(uint256 voteData, uint256[2] memory tag, uint256[] memory tees, uint256 seed, uint256 identifier) public view returns (bool) {
-        Election storage election = elections[identifier];
-        Curve.G1Point memory L = Curve.HashToPoint(uint256(election.pkHashAccumulator));
-        Curve.G1Point memory M = Curve.HashToPoint(voteData);
-        Curve.G1Point memory T = Curve.G1Point(tag[0], tag[1]);
-        uint256 h = uint256(keccak256(abi.encodePacked(M.X, M.Y, T.X, T.Y)));
-
-        uint256 c = seed;
-        for(uint256 i = 0; i < election.voters_x.length; i++) {
-            c = uint256(keccak256(abi.encodePacked(
-                    h,
-                    RingLink(
-                        Curve.G1Point(election.voters[i].chiaveX, election.voters[i].chiaveY),
-                        // Curve.G1Point(election.voters_x[i], voters[election.voters_x[i]].chiaveY),
-                        L,
-                        T,
-                        tees[i],
-                        c
-                    ))));
+    // Computes the modular inverse of a number
+    // @param a: The number to compute the inverse of
+    // @param n: The modulus
+    // @return: The modular inverse of a mod n
+    function modInverse(uint256 a, uint256 n) internal pure returns (uint256) {
+        (uint256 t, uint256 newT, uint256 r, uint256 newR) = (0, 1, n, a);
+        while (newR != 0) {
+            uint256 quotient = r / newR;
+            (t, newT) = (newT, addmod(t, n - mulmod(quotient, newT, n), n));
+            (r, newR) = (newR, r - quotient * newR);
         }
-        return c == seed;
+        require(r <= 1, "Inverse does not exist");
+        return t;
     }
-    
-    function RingLink(Curve.G1Point memory Y, Curve.G1Point memory M, Curve.G1Point memory tagpoint, uint256 s, uint256 c) internal view returns (uint256) {
-        Curve.G1Point memory a = Curve.g1add(Curve.g1mul(Curve.P1(), s), Curve.g1mul(Y, c));
-        Curve.G1Point memory b = Curve.g1add(Curve.g1mul(M, s), Curve.g1mul(tagpoint, c));
 
-        return uint256(keccak256(abi.encodePacked(
-            tagpoint.X, tagpoint.Y,
-            a.X, a.Y,
-            b.X, b.Y
-        )));
+    // Verifies an ECC signature
+    // @param publicKeyX: The X coordinate of the public key as uint256
+    // @param publicKeyY: The Y coordinate of the public key as uint256
+    // @param message: The message being signed (as bytes32)
+    // @param r: The r value of the signature
+    // @param s: The s value of the signature
+    // @return: True if the signature is valid, otherwise false
+    function verifySignature(
+        uint256[2] calldata public_keys,
+        uint256 message,
+        uint256[2] calldata signature
+    ) internal view returns (bool) {
+        // Construct the public key point
+        Curve.G1Point memory publicKey = Curve.G1Point(public_keys[0], public_keys[1]);
+
+        uint256 r = signature[0];
+        uint256 s = signature[1];
+
+        // Hash the message to get the message digest
+        uint256 z = uint256(message);
+
+        // Calculate w = s^(-1) mod N
+        uint256 w = modInverse(s, Curve.N());
+
+        // Calculate u1 = z * w mod N
+        uint256 u1 = mulmod(z, w, Curve.N());
+
+        // Calculate u2 = r * w mod N
+        uint256 u2 = mulmod(r, w, Curve.N());
+
+        // Calculate the curve points
+        Curve.G1Point memory G = Curve.P1();
+        Curve.G1Point memory point1 = G.g1mul(u1);
+        Curve.G1Point memory point2 = publicKey.g1mul(u2);
+
+        // Add the points
+        Curve.G1Point memory R = point1.g1add(point2);
+
+        // Verify if R.x == r
+        return R.X == r;
     }
 }

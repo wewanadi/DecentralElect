@@ -50,9 +50,9 @@ contract DecentralElect {
         _;
     }
 
-    constructor(address _registerManager) {
+    constructor() {
         manager = msg.sender;
-        registerManager = _registerManager;
+        registerManager = msg.sender;
     }
     
     // Manager functions 
@@ -160,6 +160,10 @@ contract DecentralElect {
 
     function check_if_voted(uint256 identifier, uint256 tag_x) external view returns (bool) {
         return elections[identifier].vote_record[tag_x];
+    }
+
+    function check_if_verified(uint256 identifier, uint256 ballot_hash) external view returns (bool) {
+        return elections[identifier].verification_record[ballot_hash];
     }
 
     // internal function
