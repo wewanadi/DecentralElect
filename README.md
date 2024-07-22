@@ -8,6 +8,8 @@ DecentralElect provides three approaches for deploying voting systems on the blo
 * DecentralElect employs linkable ring signatures but does not utilize Partition ring signatures, which means its complexity grows polynomially with the number of participants.
 * PartitionDecentralElect balances both anonymity and computational complexity, making it suitable for handling votes involving over a thousand participants.
 
+
+
 ## Four Tech
 ### Ring Signature Scheme
 
@@ -64,3 +66,12 @@ In the Reveal phase, voters demonstrate the relationship between their cast ball
 
 In the Declaration Phase, in addition to revealing the actual voting results, metrics such as the vote rate and reveal rate are also disclosed to assess whether the voting outcomes adequately represent the entire community's opinions, detect any discrepancies, and determine if a revote is necessary.
 In our hypothetical scenario of citizen voting in K-country, we introduce a policy of providing subsidies based on ballot receipts to encourage public participation and increase voter turnout. With smart contracts recording all state transitions, obtaining records of public-private key pairs of voters who have successfully cast and revealed their votes is straightforward. Leveraging this record, the government can provide ETH subsidies to participating voters' accounts, thereby reallocating funds from traditional voting procedures to decentralized miners.
+
+## Effect of Voter Count on Gas Spend
+
+![5to50total_gas_spend](fig/5to50total_gas_spend.png)
+![5to50manager_gas_spend](fig/5to50manager_gas_spend.png)
+![5to50voter_gas_spend](fig/5to50voter_gas_spend.png)
+![5to50per_Voter](fig/5to50per_Voter.png)
+
+*PDE entails 10 voters within a single cluster.*
