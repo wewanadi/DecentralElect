@@ -1,6 +1,14 @@
 # Introduce to DecentralElect
 
-## Four Methods
+## Three Methods
+
+DecentralElect provides three approaches for deploying voting systems on the blockchain: DecentralElect, NaiveElect, and PartitionDecentralElect. Corresponding smart contracts can be found in the contract files. You can use the provided test.ipynb to deploy and execute the voting systems.
+
+* NaiveElect uses standard symmetric encryption and does not guarantee anonymity through linkable ring signatures.
+* DecentralElect employs linkable ring signatures but does not utilize Partition ring signatures, which means its complexity grows polynomially with the number of participants.
+* PartitionDecentralElect balances both anonymity and computational complexity, making it suitable for handling votes involving over a thousand participants.
+
+## Four Tech
 In this chapter, we delve into four critical technologies utilized in this voting system. First, we explore how ring signatures are employed to ensure voter anonymity. Next, we address the issue of double voting by the same individual using linkable ring signatures. To solve the problem of premature opening of votes, we implement the commit-reveal scheme. Finally, to balance the reduction of overall election costs and the protection of voter privacy, we adopt the partition ring method. This chapter provides a detailed explanation of these four key technologies.
 
 ### Ring Signature Scheme
