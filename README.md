@@ -69,9 +69,9 @@ In our hypothetical scenario of citizen voting in K-country, we introduce a poli
 
 ## Effect of Voter Count on Gas Spend
 
-![5to50total_gas_spend](fig/5to50total_gas_spend.png)
-![5to50manager_gas_spend](fig/5to50manager_gas_spend.png)
-![5to50voter_gas_spend](fig/5to50voter_gas_spend.png)
-![5to50per_Voter](fig/5to50per_Voter.png)
+![5to50total_gas_spend](fig/5to50total_gas_spend.svg)
+![5to50manager_gas_spend](fig/5to50manager_gas_spend.svg)
+![5to50voter_gas_spend](fig/5to50voter_gas_spend.svg)
+![5to50per_Voter](fig/5to50per_Voter.svg)
 
 *PDE entails 10 voters within a single cluster.*
